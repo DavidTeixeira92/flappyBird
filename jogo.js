@@ -1,4 +1,6 @@
 console.log('[DTeixeira92] Flappy Bird');
+console.log('Inscreva-se no canal :D https://www.youtube.com/c/TioDavidEducação');
+
 const sprites = new Image();
 sprites.src = './images/sprites.png';
 
@@ -68,6 +70,17 @@ const chao = {
 };
 
 
+//Criando function para tratar a colisão
+function fazColisao(flappyBird, chao) {
+    const flappyBirdY = flappyBird.y + flappyBird.altura;
+    const chaoY = chao.y;
+
+    if(flappyBirdY >= chaoY) {
+        return true;
+    }
+        return false;
+}
+
 // Criando uma estrutura que representa o passarinho, Flappy Bird
 const flappyBird = {
 
@@ -80,11 +93,20 @@ const flappyBird = {
     pulo: 4.6,
     pula(){
         console.log('devo pular, senão, eu vou moooorrrréÊÊ');
+        console.log('[antes]', flappyBird.velocidade);
         flappyBird.velocidade = - flappyBird.pulo;
+        console.log('[depois]', flappyBird.velocidade);
     },
     gravidade: 0.25,
     velocidade: 0,
     atualiza() {
+        if(fazColisao(flappyBird, chao)){
+
+            console.log('Fez colisão');
+            mudaParaTela(Telas.INICIO);
+            return;
+
+        }
         flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade;
         flappyBird.y = flappyBird.y + flappyBird.velocidade;
     },
@@ -179,4 +201,3 @@ window.addEventListener('click', function() {
 })
 mudaParaTela(Telas.INICIO);
 loop();
-
