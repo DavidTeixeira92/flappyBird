@@ -81,7 +81,10 @@ function fazColisao(flappyBird, chao) {
         return false;
 }
 
-// Criando uma estrutura que representa o passarinho, Flappy Bird
+
+//Função que vai criar um novo Flappy Bird
+function criaFlappyBird() {
+    // Criando uma estrutura que representa o passarinho, Flappy Bird
 const flappyBird = {
 
     spriteX: 0,
@@ -119,9 +122,13 @@ const flappyBird = {
             flappyBird.largura, flappyBird.altura,   
         );
         
-    },
+    }
 
-};
+}
+    return flappyBird;
+}
+
+
 
 //mesagemGetReady
 const mensagemGetReady = {
@@ -147,18 +154,27 @@ const mensagemGetReady = {
 
 // 
 // TELAS
+//Criando objeto globais que vai receber valores
+const globais = { };
 //Usando let porque o valor de telaAtiva vai sempre alterar
 let telaAtiva = {};
 function mudaParaTela(novaTela) {
     telaAtiva = novaTela;
-};
+  
+    if(telaAtiva.inicializa) {
+      telaAtiva.inicializa();
+    }
+  }
 
 const Telas = {
     INICIO: {
+        inicializa() {
+            globais.flappyBird = criaFlappyBird();
+        },
         desenha() {
             planoDeFundo.desenha();
             chao.desenha();
-            flappyBird.desenha();
+            globais.flappyBird.desenha();
             mensagemGetReady.desenha();
         },
         click() {
@@ -174,13 +190,13 @@ Telas.JOGO ={
     desenha() {           
         planoDeFundo.desenha();
         chao.desenha();
-        flappyBird.desenha();
+        globais.flappyBird.desenha();
     },
     click() {
-        flappyBird.pula();
+        globais.flappyBird.pula();
     },
     atualiza() {
-        flappyBird.atualiza();
+        globais.flappyBird.atualiza();
     }
 };
 
