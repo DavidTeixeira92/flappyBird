@@ -6,7 +6,6 @@ const canvas = document.querySelector('canvas');
 const contexto = canvas.getContext('2d');
 
 
-//Background
 // [Plano de Fundo]
 const planoDeFundo = {
     spriteX: 390,
@@ -78,6 +77,11 @@ const flappyBird = {
     altura: 24,
     x: 10,
     y: 50,
+    pulo: 4.6,
+    pula(){
+        console.log('devo pular, senão, eu vou moooorrrréÊÊ');
+        flappyBird.velocidade = - flappyBird.pulo;
+    },
     gravidade: 0.25,
     velocidade: 0,
     atualiza() {
@@ -149,6 +153,9 @@ Telas.JOGO ={
         planoDeFundo.desenha();
         chao.desenha();
         flappyBird.desenha();
+    },
+    click() {
+        flappyBird.pula();
     },
     atualiza() {
         flappyBird.atualiza();
