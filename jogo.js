@@ -1,6 +1,9 @@
 console.log('[DTeixeira92] Flappy Bird');
 console.log('Inscreva-se no canal :D https://www.youtube.com/c/TioDavidEducação');
 
+const som_HIT = new Audio();
+som_HIT.src = './audios/aii.mp3';
+
 const sprites = new Image();
 sprites.src = './images/sprites.png';
 
@@ -106,6 +109,7 @@ const flappyBird = {
         if(fazColisao(flappyBird, chao)){
 
             console.log('Fez colisão');
+            som_HIT.play();
             mudaParaTela(Telas.INICIO);
             return;
 
