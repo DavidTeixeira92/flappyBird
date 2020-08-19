@@ -2,7 +2,14 @@ console.log('[DTeixeira92] Flappy Bird');
 console.log('Inscreva-se no canal :D https://www.youtube.com/c/TioDavidEducação');
 
 const som_HIT = new Audio();
-som_HIT.src = './audios/aii.wav';
+som_HIT.src = './audios/aimeuc.wav';
+
+ const som_FUNDO = new Audio();
+ som_FUNDO.src = './audios/nigthwishvoldown.wav';
+
+ const som_TROLL = new Audio();
+ som_TROLL.src = './audios/vcvailevarumasurra.wav';
+
 
 const sprites = new Image();
 sprites.src = './images/sprites.png';
@@ -37,13 +44,16 @@ const planoDeFundo = {
         planoDeFundo.largura, planoDeFundo.altura,
         (planoDeFundo.x + planoDeFundo.largura), planoDeFundo.y,
         planoDeFundo.largura, planoDeFundo.altura,
+        
       );
     },
   };
 
+//Implementando uma função para criar o chão
+function criaChao() {
 
-//Chão
-const chao = {
+    //Chão
+    const chao = {
 
     spriteX: 0,
     spriteY: 610,
@@ -51,6 +61,20 @@ const chao = {
     altura: 112,
     x: 0,
     y: canvas.height - 112,
+    atualiza() { 
+        // console.log('vamos mexer o chão');
+        const movimentoDoChao = 1;
+        const repeteEm = chao.largura / 2;
+        const movimentacao = chao.x - movimentoDoChao;
+        
+
+        // console.log('[chao.x]', chao.x);
+        // console.log('[repeteEm]', repeteEm);
+        // console.log('[Calculo maluco]', movimentacao % repeteEm);
+
+        chao.x = movimentacao % repeteEm;
+    },
+    
     desenha(){
         contexto.drawImage(
             sprites,
@@ -70,7 +94,12 @@ const chao = {
         
     },
 
+}
+    return chao;
+
 };
+
+
 
 
 //Criando function para tratar a colisão
@@ -106,13 +135,15 @@ const flappyBird = {
     gravidade: 0.25,
     velocidade: 0,
     atualiza() {
-        if(fazColisao(flappyBird, chao)){
+        
+        if(fazColisao(flappyBird, globais.chao)){
 
             console.log('Fez colisão');
+        
             som_HIT.play();
             setTimeout(() => {
                 mudaParaTela(Telas.INICIO);
-            } , 1500);
+            } , 250);
             
             return;
 
@@ -128,12 +159,14 @@ const flappyBird = {
             flappyBird.x, flappyBird.y,
             flappyBird.largura, flappyBird.altura,   
         );
+
         
     }
+    
 
 }
     return flappyBird;
-}
+};
 
 
 
@@ -152,10 +185,12 @@ const mensagemGetReady = {
             mensagemGetReady.sX, mensagemGetReady.sY,
             mensagemGetReady.w, mensagemGetReady.h, 
             mensagemGetReady.x, mensagemGetReady.y,
-            mensagemGetReady.w, mensagemGetReady.h,   
+            mensagemGetReady.w, mensagemGetReady.h,
+            
+              
         );        
     },
-
+    
 };
 
 
@@ -167,28 +202,42 @@ const globais = { };
 let telaAtiva = {};
 function mudaParaTela(novaTela) {
     telaAtiva = novaTela;
+    
   
     if(telaAtiva.inicializa) {
       telaAtiva.inicializa();
+      
+      
     }
   }
 
 const Telas = {
     INICIO: {
+
+           
         inicializa() {
+            
             globais.flappyBird = criaFlappyBird();
+            globais.chao = criaChao();
+            som_FUNDO.pause();
+            
+                        
         },
         desenha() {
             planoDeFundo.desenha();
-            chao.desenha();
+            globais.chao.desenha();
             globais.flappyBird.desenha();
             mensagemGetReady.desenha();
+                        
         },
         click() {
+            som_TROLL.play();            
             mudaParaTela(Telas.JOGO);
+            
         },
         atualiza() {
-
+            
+            globais.chao.atualiza();
         }
     }
 };
@@ -196,14 +245,17 @@ const Telas = {
 Telas.JOGO ={
     desenha() {           
         planoDeFundo.desenha();
-        chao.desenha();
+        globais.chao.desenha();
         globais.flappyBird.desenha();
     },
     click() {
+        som_FUNDO.play();
         globais.flappyBird.pula();
     },
     atualiza() {
         globais.flappyBird.atualiza();
+        
+      
     }
 };
 
@@ -212,6 +264,7 @@ function loop(){
 
     telaAtiva.desenha();
     telaAtiva.atualiza();
+     
     
     requestAnimationFrame(loop);
 
@@ -220,7 +273,9 @@ function loop(){
 window.addEventListener('click', function() {
     if(telaAtiva.click) {
         telaAtiva.click();
+        
     }
 })
+
 mudaParaTela(Telas.INICIO);
 loop();
