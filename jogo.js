@@ -110,7 +110,10 @@ const flappyBird = {
 
             console.log('Fez colisão');
             som_HIT.play();
-            mudaParaTela(Telas.INICIO);
+            setTimeout(() => {
+                mudaParaTela(Telas.INICIO);
+            } , 1500);
+            
             return;
 
         }
