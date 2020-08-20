@@ -1,6 +1,11 @@
 console.log('[DTeixeira92] Flappy Bird');
 console.log('Inscreva-se no canal :D https://www.youtube.com/c/TioDavidEducação');
 
+
+//criando uma variáveis iterativa que irá auxiliar na contabilização dos frames
+//para saber quanto tempo se passou
+let frames = 0;
+
 const som_HIT = new Audio();
 som_HIT.src = './audios/aimeuc.wav';
 
@@ -151,10 +156,33 @@ const flappyBird = {
         flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade;
         flappyBird.y = flappyBird.y + flappyBird.velocidade;
     },
+    movimentos: [
+
+        { spriteX: 0, spriteY: 0, }, //asa para cima
+        { spriteX: 0, spriteY: 26, }, //asa no meio
+        { spriteX: 0, spriteY: 52, }, //asa para baixo
+        { spriteX: 0, spriteY: 26, }, //asa no meio
+
+    ],
+    frameAtual: 0,
+    atualizaFrameAtual() {
+
+        // console.log(frames);
+        const baseDoIncremento = 1;
+        const incremento = baseDoIncremento + flappyBird.frameAtual;
+        const baseRepeticao = flappyBird.movimentos.length;
+        // console.log('[incremento]', incremento);
+        // console.log('[baseRepeticao]', baseRepeticao);
+        // console.log('[frame]', incremento % baseRepeticao);
+        flappyBird.frameAtual = incremento % baseRepeticao
+
+    },
     desenha(){
+        flappyBird.atualizaFrameAtual();
+        const {spriteX, spriteY}  = flappyBird.movimentos[flappyBird.frameAtual];
         contexto.drawImage(
             sprites,
-            flappyBird.spriteX, flappyBird.spriteY, //Sprite X, Sprite Y
+            spriteX, spriteY, //Sprite X, Sprite Y
             flappyBird.largura, flappyBird.altura, //Tamanho do recorte na sprite
             flappyBird.x, flappyBird.y,
             flappyBird.largura, flappyBird.altura,   
@@ -265,7 +293,7 @@ function loop(){
     telaAtiva.desenha();
     telaAtiva.atualiza();
      
-    
+    frames = frames + 1;
     requestAnimationFrame(loop);
 
 }
