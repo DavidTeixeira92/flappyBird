@@ -132,10 +132,10 @@ const flappyBird = {
     y: 50,
     pulo: 4.6,
     pula(){
-        console.log('devo pular, senão, eu vou moooorrrréÊÊ');
-        console.log('[antes]', flappyBird.velocidade);
+        // console.log('devo pular, senão, eu vou moooorrrréÊÊ');
+        // console.log('[antes]', flappyBird.velocidade);
         flappyBird.velocidade = - flappyBird.pulo;
-        console.log('[depois]', flappyBird.velocidade);
+        // console.log('[depois]', flappyBird.velocidade);
     },
     gravidade: 0.25,
     velocidade: 0,
@@ -143,7 +143,7 @@ const flappyBird = {
         
         if(fazColisao(flappyBird, globais.chao)){
 
-            console.log('Fez colisão');
+            // console.log('Fez colisão');
         
             som_HIT.play();
             setTimeout(() => {
@@ -166,15 +166,18 @@ const flappyBird = {
     ],
     frameAtual: 0,
     atualizaFrameAtual() {
-
+        const intervaloDeFrames = 10;
+        const passouIntervalo = frames % intervaloDeFrames === 0;
+        if(passouIntervalo) {
+            const baseDoIncremento = 1;
+            const incremento = baseDoIncremento + flappyBird.frameAtual;
+            const baseRepeticao = flappyBird.movimentos.length;
+            flappyBird.frameAtual = incremento % baseRepeticao;
+        }
         // console.log(frames);
-        const baseDoIncremento = 1;
-        const incremento = baseDoIncremento + flappyBird.frameAtual;
-        const baseRepeticao = flappyBird.movimentos.length;
         // console.log('[incremento]', incremento);
         // console.log('[baseRepeticao]', baseRepeticao);
         // console.log('[frame]', incremento % baseRepeticao);
-        flappyBird.frameAtual = incremento % baseRepeticao
 
     },
     desenha(){
