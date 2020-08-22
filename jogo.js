@@ -10,7 +10,7 @@ const som_HIT = new Audio();
 som_HIT.src = './audios/aimeuc.wav';
 
  const som_FUNDO = new Audio();
- som_FUNDO.src = './audios/nigthwishvoldown.wav';
+ som_FUNDO.src = './audios/skank.wav';
 
  const som_TROLL = new Audio();
  som_TROLL.src = './audios/vcvailevarumasurra.wav';
@@ -363,7 +363,7 @@ const Telas = {
             
             globais.flappyBird = criaFlappyBird();
             globais.chao = criaChao();
-            som_FUNDO.pause();
+            som_FUNDO.load();
             globais.canos = criaCanos();
             
                         
@@ -377,14 +377,14 @@ const Telas = {
                         
         },
         click() {
-            som_TROLL.play();            
+            // som_TROLL.play();            
             mudaParaTela(Telas.JOGO);
             
         },
         atualiza() {
             
             globais.chao.atualiza();
-            globais.canos.atualiza();
+            
         }
     }
 };
@@ -402,6 +402,7 @@ Telas.JOGO ={
     },
     atualiza() {
         globais.canos.atualiza();
+        globais.chao.atualiza();
         globais.flappyBird.atualiza();
         
       
