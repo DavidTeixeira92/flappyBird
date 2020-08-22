@@ -270,8 +270,33 @@ function criaCanos(){
                     canos.largura, canos.altura,
                 )
 
+                par.canoCeu = {
+                    x: canoCeuX,
+                    y: canos.altura + canoCeuY
+                  }
+                  par.canoChao = {
+                    x: canoChaoX,
+                    y: canoChaoY,
+                  }
+
 
             })
+        },
+        temColisaoComFlappyBird(par) {
+            const cabecaDoFlappy = globais.flappyBird.y;
+            const peDoFlappy = globais.flappyBird.y + globais.flappyBird.altura;
+            if(globais.flappyBird.x >= par.x) {
+                console.log('Invadiu a área dos canos');
+                if(cabecaDoFlappy <= par.canoCeu.y) {
+                    return true;
+                }
+                
+                if(peDoFlappy <= par.canoChao.y) {
+                    return true;
+                }
+            }
+
+            return false;
         },
         pares: [],
         atualiza() {
@@ -282,17 +307,30 @@ function criaCanos(){
                 canos.pares.push({
                     x: canvas.width,
                     y: 150 * (Math.random() + 1),
+                    // y: 350,
                 });
+
+                
 
             }
 
             canos.pares.forEach(function(par) {
                 par.x = par.x - 2;
-                if(par.x + canos.width <= 0) {
+                
+                // Verificação da colisão com o cano
+                if(canos.temColisaoComFlappyBird(par)) {
+
+                    // console.log('ei man, como tu quebrou o cano? "ki" cano? [VOCÊ PERDEU]');
+
+                }
+
+                //ajuste no respawn dos canos
+                if(par.x + canos.largura <= 0) {
                     canos.pares.shift();
                 }
             });
         }
+
 
     }
 
@@ -333,9 +371,9 @@ const Telas = {
         desenha() {
             planoDeFundo.desenha();
             globais.flappyBird.desenha();
-            globais.canos.desenha();
+            
             globais.chao.desenha();
-            // mensagemGetReady.desenha();
+            mensagemGetReady.desenha();
                         
         },
         click() {
@@ -354,6 +392,7 @@ const Telas = {
 Telas.JOGO ={
     desenha() {           
         planoDeFundo.desenha();
+        globais.canos.desenha();
         globais.chao.desenha();
         globais.flappyBird.desenha();
     },
@@ -362,6 +401,7 @@ Telas.JOGO ={
         globais.flappyBird.pula();
     },
     atualiza() {
+        globais.canos.atualiza();
         globais.flappyBird.atualiza();
         
       
